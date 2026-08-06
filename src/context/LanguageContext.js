@@ -1,56 +1,34 @@
-/**
- * LanguageContext.js — 8-language support
- * Languages: ar, en, tr, ur, hi, fil, si, ne
- * RTL: ar, ur
- */
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translations } from '../utils/translations';
 
-const LANG_KEY = 'trucklink_lang';
+const LanguageContext = createContext();
 
-// Language metadata shown in the picker
 export const LANGUAGES = [
-  { code: 'ar',  label: 'العربية',    nativeLabel: 'Arabic',    flag: '🇸🇦', rtl: true  },
-  { code: 'en',  label: 'English',    nativeLabel: 'English',   flag: '🇬🇧', rtl: false },
-  { code: 'tr',  label: 'Türkçe',     nativeLabel: 'Turkish',   flag: '🇹🇷', rtl: false },
-  { code: 'ur',  label: 'اردو',        nativeLabel: 'Urdu',      flag: '🇵🇰', rtl: true  },
-  { code: 'hi',  label: 'हिंदी',       nativeLabel: 'Hindi',     flag: '🇮🇳', rtl: false },
-  { code: 'fil', label: 'Filipino',   nativeLabel: 'Filipino',  flag: '🇵🇭', rtl: false },
-  { code: 'si',  label: 'සිංහල',      nativeLabel: 'Sinhala',   flag: '🇱🇰', rtl: false },
-  { code: 'ne',  label: 'नेपाली',      nativeLabel: 'Nepali',    flag: '🇳🇵', rtl: false },
+  { code: 'ar', flag: '🇸🇦', label: 'العربية',   nativeLabel: 'Arabic' },
+  { code: 'en', flag: '🇬🇧', label: 'English',    nativeLabel: 'English' },
+  { code: 'ur', flag: '🇵🇰', label: 'اردو',       nativeLabel: 'Urdu' },
+  { code: 'fr', flag: '🇫🇷', label: 'Français',   nativeLabel: 'French' },
+  { code: 'hi', flag: '🇮🇳', label: 'हिन्दी',      nativeLabel: 'Hindi' },
+  { code: 'bn', flag: '🇧🇩', label: 'বাংলা',      nativeLabel: 'Bengali' },
+  { code: 'sw', flag: '🇰🇪', label: 'Kiswahili',  nativeLabel: 'Swahili' },
 ];
 
-const DEFAULT_LANG = 'ar';
-const RTL_LANGS = new Set(['ar', 'ur']);
-
-const LanguageContext = createContext(null);
+const RTL_LANGS = ['ar', 'ur'];
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(DEFAULT_LANG);
+  const [lang, setLang] = useState('ar');
 
-  // Load saved language on mount
-  React.useEffect(() => {
-    AsyncStorage.getItem(LANG_KEY)
-      .then(saved => { if (saved && translations[saved]) setLang(saved); })
-      .catch(() => {});
-  }, []);
+  const switchLanguage = async (newLang) => {
+    setLang(newLang);
+    try { await AsyncStorage.setItem('trucklink_lang', newLang); } catch {}
+  };
 
-  const switchLanguage = useCallback(async (code) => {
-    if (!translations[code]) return;
-    setLang(code);
-    try { await AsyncStorage.setItem(LANG_KEY, code); } catch (_) {}
-  }, []);
+  const toggleLanguage = () => switchLanguage(lang === 'ar' ? 'en' : 'ar');
 
-  // Cycle through all 8 languages (used by the globe toggle button)
-  const toggleLanguage = useCallback(() => {
-    const codes = LANGUAGES.map(l => l.code);
-    const next = codes[(codes.indexOf(lang) + 1) % codes.length];
-    switchLanguage(next);
-  }, [lang, switchLanguage]);
-
-  const isRTL = RTL_LANGS.has(lang);
-  const t = translations[lang] || translations[DEFAULT_LANG];
+  // Use the lang's translations, fall back to English, then Arabic
+  const t = translations[lang] ?? translations['en'] ?? translations['ar'] ?? {};
+  const isRTL = RTL_LANGS.includes(lang);
 
   return (
     <LanguageContext.Provider value={{ lang, t, isRTL, switchLanguage, toggleLanguage, LANGUAGES }}>
@@ -59,8 +37,4 @@ export function LanguageProvider({ children }) {
   );
 }
 
-export function useLanguage() {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error('useLanguage must be inside <LanguageProvider>');
-  return ctx;
-}
+export const useLanguage = () => useContext(LanguageContext);

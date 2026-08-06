@@ -1,14 +1,8 @@
 /**
- * LanguageBar.js
- * Horizontal row of 7 flag icons shown at the top of every screen.
- * Tapping a flag switches the app language instantly.
- *
- * Usage in AppNavigator header:
- *   headerRight: () => <LanguageBar />
- *   headerTitle: () => <LanguageBar />   ← centered in header
+ * LanguageBar.js — 7 flag icons in header, tap to switch language instantly
  */
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useLanguage } from '../context/LanguageContext';
 
 const LANGS = [
@@ -25,7 +19,11 @@ export default function LanguageBar() {
   const { lang, switchLanguage } = useLanguage();
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.container}
+    >
       {LANGS.map(({ code, flag }) => {
         const active = code === lang;
         return (
@@ -33,14 +31,13 @@ export default function LanguageBar() {
             key={code}
             onPress={() => switchLanguage(code)}
             style={[styles.btn, active && styles.activeBtn]}
-            hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
-            accessibilityLabel={code}
+            hitSlop={{ top: 8, bottom: 8, left: 2, right: 2 }}
           >
-            <Text style={[styles.flag, active && styles.activeFlag]}>{flag}</Text>
+            <Text style={styles.flag}>{flag}</Text>
           </TouchableOpacity>
         );
       })}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -48,12 +45,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 4,
-    gap: 2,
+    paddingRight: 8,
+    gap: 3,
   },
   btn: {
-    padding: 4,
+    width: 30,
+    height: 30,
     borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1.5,
     borderColor: 'transparent',
   },
@@ -62,10 +62,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBF3EA',
   },
   flag: {
-    fontSize: 18,
-    opacity: 0.55,
-  },
-  activeFlag: {
-    opacity: 1,
+    fontSize: 16,
   },
 });
