@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 import LanguageBar              from '../components/LanguageBar';
+import { useLanguage }          from '../context/LanguageContext';
 
 import SplashScreen             from '../screens/SplashScreen';
 import LoginScreen              from '../screens/LoginScreen';
@@ -26,9 +27,21 @@ import { COLORS } from '../utils/constants';
 const Stack = createNativeStackNavigator();
 const Tab   = createBottomTabNavigator();
 
+const TAB_LABELS = {
+  ar: { map: 'الخريطة', post: 'نشر شحنة', loads: 'الشحنات', truck: 'شاحنتي', orders: 'الطلبات', profile: 'الملف' },
+  en: { map: 'Map',     post: 'Post Load', loads: 'Find Loads', truck: 'My Truck', orders: 'Orders', profile: 'Profile' },
+  ur: { map: 'نقشہ',    post: 'لوڈ پوسٹ', loads: 'لوڈ تلاش', truck: 'میرا ٹرک', orders: 'آرڈر', profile: 'پروفائل' },
+  fr: { map: 'Carte',   post: 'Publier',   loads: 'Chercher',  truck: 'Mon Camion', orders: 'Commandes', profile: 'Profil' },
+  hi: { map: 'नक्शा',   post: 'लोड पोस्ट', loads: 'लोड खोजें', truck: 'मेरा ट्रक', orders: 'ऑर्डर', profile: 'प्रोफ़ाइल' },
+  bn: { map: 'মানচিত্র', post: 'লোড পোস্ট', loads: 'লোড খুঁজুন', truck: 'আমার ট্রাক', orders: 'অর্ডার', profile: 'প্রোফাইল' },
+  sw: { map: 'Ramani',  post: 'Chapisha',  loads: 'Tafuta',    truck: 'Lori Langu', orders: 'Maagizo', profile: 'Wasifu' },
+};
+
 // ── Bottom tab navigator ───────────────────────────────────────────────────────
 function MainTabs({ route }) {
   const role = route.params?.role ?? 'shipper';
+  const { lang } = useLanguage();
+  const L = TAB_LABELS[lang] ?? TAB_LABELS.en;
 
   return (
     <Tab.Navigator
@@ -61,23 +74,23 @@ function MainTabs({ route }) {
         },
       })}
     >
-      <Tab.Screen name="Map"     component={MapScreen}     options={{ tabBarLabel: 'Map' }} />
+      <Tab.Screen name="Map"     component={MapScreen}     options={{ tabBarLabel: L.map }} />
 
       {/* Shipper-specific tabs */}
       {role === 'shipper' && (
-        <Tab.Screen name="Post"  component={PostLoadScreen}  options={{ tabBarLabel: 'Post Load' }} />
+        <Tab.Screen name="Post"  component={PostLoadScreen}  options={{ tabBarLabel: L.post }} />
       )}
 
       {/* Driver-specific tabs */}
       {role === 'driver' && (
         <>
-          <Tab.Screen name="Loads"  component={BrowseLoadsScreen}        options={{ tabBarLabel: 'Find Loads' }} />
-          <Tab.Screen name="Avail"  component={DriverAvailabilityScreen} options={{ tabBarLabel: 'My Truck' }} />
+          <Tab.Screen name="Loads"  component={BrowseLoadsScreen}        options={{ tabBarLabel: L.loads }} />
+          <Tab.Screen name="Avail"  component={DriverAvailabilityScreen} options={{ tabBarLabel: L.truck }} />
         </>
       )}
 
-      <Tab.Screen name="Orders"  component={OrdersScreen}  options={{ tabBarLabel: 'Orders' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profile' }} />
+      <Tab.Screen name="Orders"  component={OrdersScreen}  options={{ tabBarLabel: L.orders }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: L.profile }} />
     </Tab.Navigator>
   );
 }
