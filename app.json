@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "TruckLink",
+    "slug": "trucklink",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1A3C5E"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.trucklink.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "TruckLink uses your location to show nearby trucks and loads."
+      }
+    },
+    "android": {
+      "package": "com.trucklink.app",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "newArchEnabled": false
+  }
+}

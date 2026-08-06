@@ -1,0 +1,7 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project "/Users/amjad/Documents/TruckLink MVP/TruckLink/ios/TruckLink.xcodeproj" -configuration Debug -scheme TruckLink -destination id=3864CD94-AE31-4096-B018-02C0BA8372BB COCOAPODS_PARALLEL_CODE_SIGN=true COMPILER_INDEX_STORE_ENABLE=NO
+
+Build settings from command line:
+    COCOAPODS_PARALLEL_CODE_SIGN = true
+    COMPILER_INDEX_STORE_ENABLE = NO
+

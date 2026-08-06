@@ -1,0 +1,6 @@
+2026-07-24 19:02:29.438 xcodebuild[71253:2573861] Writing error result bundle to /var/folders/r9/jqwb153n2xb546gd7g0dcsfc0000gn/T/ResultBundle_2026-24-07_19-02-0029.xcresult
+xcodebuild: error: Unable to find a destination matching the provided destination specifier:
+		{ id:3864CD94-AE31-4096-B018-02C0BA8372BB }
+
+	Ineligible destinations for the "TruckLink" scheme:
+		{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device, error:iOS 26.5 is not installed. Please download and install the platform from Xcode > Settings > Components. }
