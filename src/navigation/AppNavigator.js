@@ -1,9 +1,9 @@
-// src/navigation/AppNavigator.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import LanguageBar              from '../components/LanguageBar';
 
 import SplashScreen             from '../screens/SplashScreen';
 import LoginScreen              from '../screens/LoginScreen';
@@ -12,7 +12,6 @@ import RoleSelectionScreen      from '../screens/RoleSelectionScreen';
 import DriverSetupScreen        from '../screens/DriverSetupScreen';
 import EditTruckScreen          from '../screens/EditTruckScreen';
 import AddTruckScreen           from '../screens/AddTruckScreen';
-import HomeScreen               from '../screens/HomeScreen';
 import MapScreen                from '../screens/MapScreen';
 import PostLoadScreen           from '../screens/PostLoadScreen';
 import BrowseLoadsScreen        from '../screens/BrowseLoadsScreen';
@@ -22,32 +21,23 @@ import OrdersScreen             from '../screens/OrdersScreen';
 import ProfileScreen            from '../screens/ProfileScreen';
 import TermsScreen              from '../screens/TermsScreen';
 import PrivacyScreen            from '../screens/PrivacyScreen';
-import { COLORS }               from '../utils/constants';
-import { useLanguage }          from '../context/LanguageContext';
+import { COLORS } from '../utils/constants';
 
 const Stack = createNativeStackNavigator();
 const Tab   = createBottomTabNavigator();
 
-const TAB_ICONS = {
-  Home:    '🏠',
-  Map:     '🗺️',
-  Post:    '📦',
-  Loads:   '📋',
-  Avail:   '🚛',
-  Orders:  '🧾',
-  Profile: '👤',
-};
-
+// ── Bottom tab navigator ───────────────────────────────────────────────────────
 function MainTabs({ route }) {
-  const role          = route.params?.role ?? 'shipper';
-  const { t, isRTL } = useLanguage();
-  const tabs          = t.tabs;
+  const role = route.params?.role ?? 'shipper';
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={({ route: r }) => ({
-        headerShown: false,
+      screenOptions={({ route: tabRoute }) => ({
+        headerShown: true,
+        headerRight: () => <LanguageBar />,
+        headerStyle: { backgroundColor: '#FBF7F0' },
+        headerTintColor: '#3D2410',
+        headerTitleStyle: { fontWeight: '700' },
         tabBarActiveTintColor:   COLORS.primary,
         tabBarInactiveTintColor: COLORS.subtext,
         tabBarStyle: {
@@ -56,49 +46,62 @@ function MainTabs({ route }) {
           borderTopColor: COLORS.border,
           elevation: 12,
         },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
-        tabBarIcon: () => (
-          <Text style={{ fontSize: 22 }}>{TAB_ICONS[r.name] ?? '●'}</Text>
-        ),
+        tabBarIcon: ({ focused, color, size }) => {
+          const icons = {
+            Map:       focused ? '🗺️' : '🗺',
+            Post:      focused ? '📦' : '📦',
+            Loads:     focused ? '📋' : '📋',
+            Avail:     focused ? '🚛' : '🚚',
+            Orders:    focused ? '🧾' : '🧾',
+            Profile:   focused ? '👤' : '👤',
+          };
+          return (
+            <Text style={{ fontSize: 22 }}>{icons[tabRoute.name] ?? '●'}</Text>
+          );
+        },
       })}
     >
-      <Tab.Screen name="Home"    component={HomeScreen}    options={{ tabBarLabel: tabs.home    ?? 'Home' }} />
-      <Tab.Screen name="Map"     component={MapScreen}     options={{ tabBarLabel: tabs.map     ?? 'Map'  }} />
+      <Tab.Screen name="Map"     component={MapScreen}     options={{ tabBarLabel: 'Map' }} />
 
+      {/* Shipper-specific tabs */}
       {role === 'shipper' && (
-        <Tab.Screen name="Post"  component={PostLoadScreen}  options={{ tabBarLabel: tabs.post ?? 'Post' }} />
+        <Tab.Screen name="Post"  component={PostLoadScreen}  options={{ tabBarLabel: 'Post Load' }} />
       )}
 
+      {/* Driver-specific tabs */}
       {role === 'driver' && (
         <>
-          <Tab.Screen name="Loads" component={BrowseLoadsScreen}        options={{ tabBarLabel: tabs.loads ?? 'Loads'    }} />
-          <Tab.Screen name="Avail" component={DriverAvailabilityScreen} options={{ tabBarLabel: tabs.avail ?? 'My Truck' }} />
+          <Tab.Screen name="Loads"  component={BrowseLoadsScreen}        options={{ tabBarLabel: 'Find Loads' }} />
+          <Tab.Screen name="Avail"  component={DriverAvailabilityScreen} options={{ tabBarLabel: 'My Truck' }} />
         </>
       )}
 
-      <Tab.Screen name="Orders"  component={OrdersScreen}  options={{ tabBarLabel: tabs.orders  ?? 'Orders'  }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: tabs.profile ?? 'Profile' }} />
+      <Tab.Screen name="Orders"  component={OrdersScreen}  options={{ tabBarLabel: 'Orders' }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profile' }} />
     </Tab.Navigator>
   );
 }
 
+// ── Root stack ────────────────────────────────────────────────────────────────
 export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash"        component={SplashScreen} />
-        <Stack.Screen name="Login"         component={LoginScreen} />
-        <Stack.Screen name="OTP"           component={OTPScreen} />
-        <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
-        <Stack.Screen name="DriverSetup"   component={DriverSetupScreen} />
-        <Stack.Screen name="EditTruck"     component={EditTruckScreen} />
-        <Stack.Screen name="AddTruck"      component={AddTruckScreen} />
-        <Stack.Screen name="Main"          component={MainTabs} />
-        <Stack.Screen name="Negotiation"   component={NegotiationScreen}
+        <Stack.Screen name="Splash"          component={SplashScreen} />
+        <Stack.Screen name="Login"           component={LoginScreen} />
+        <Stack.Screen name="OTP"             component={OTPScreen} />
+        <Stack.Screen name="RoleSelection"   component={RoleSelectionScreen} />
+        {/* New driver setup — shown once after registration */}
+        <Stack.Screen name="DriverSetup"     component={DriverSetupScreen} />
+        {/* Edit / add truck screens — reached from DriverAvailabilityScreen */}
+        <Stack.Screen name="EditTruck"       component={EditTruckScreen} />
+        <Stack.Screen name="AddTruck"        component={AddTruckScreen} />
+        <Stack.Screen name="Main"            component={MainTabs} />
+        <Stack.Screen name="Negotiation"     component={NegotiationScreen}
           options={{ presentation: 'card', animation: 'slide_from_right' }} />
-        <Stack.Screen name="Terms"         component={TermsScreen}
+        <Stack.Screen name="Terms"   component={TermsScreen}
           options={{ presentation: 'card', animation: 'slide_from_right' }} />
-        <Stack.Screen name="Privacy"       component={PrivacyScreen}
+        <Stack.Screen name="Privacy" component={PrivacyScreen}
           options={{ presentation: 'card', animation: 'slide_from_right' }} />
       </Stack.Navigator>
     </NavigationContainer>

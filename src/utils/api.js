@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ── Change this URL after you deploy to Railway ───────────────────────────────
 // Local testing (your computer):   'http://localhost:3000'
 // Railway (production):            'https://your-app-name.up.railway.app'
-export const API_BASE_URL = 'https://truckapp-production-2be0.up.railway.app';
+export const API_BASE_URL = 'https://trucklink-backend-production.up.railway.app';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Internal helpers
@@ -263,16 +263,6 @@ export async function acceptLoad(loadId, driverId, agreedPrice) {
     method: 'PUT',
     body: JSON.stringify({ driver_id: driverId, agreed_price: agreedPrice }),
   });
-}
-
-
-/**
- * Get all orders (confirmed/in_transit/delivered/cancelled) for the current user.
- * Works for both shippers and drivers.
- * @returns {{ orders: [] }}
- */
-export async function getMyOrders() {
-  return apiFetch('/api/loads/mine');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
