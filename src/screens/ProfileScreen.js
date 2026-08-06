@@ -51,11 +51,59 @@ export default function ProfileScreen({ navigation }) {
     ar: { settings: 'الإعدادات', notifications: 'الإشعارات', language: 'اللغة',
           switchRole: 'تغيير الدور', privacy: 'الخصوصية', help: 'المساعدة والدعم',
           terms: 'شروط الاستخدام', signOut: 'تسجيل الخروج', rating: 'التقييم',
-          trips: 'الرحلات', member: 'عضو منذ', fee: 'عمولة المنصة', version: 'تراك لينك الإصدار 1.0.0' },
+          trips: 'الرحلات', member: 'عضو منذ', fee: 'عمولة المنصة', version: 'تراك لينك الإصدار 1.0.0',
+          roleShipper: '📦 صاحب شحنة', roleDriver: '🚛 سائق',
+          feeDesc: `تراك لينك تجمع عمولة ثابتة ${PLATFORM_FEE_PERCENT}% على كل صفقة مكتملة. تُخصم تلقائياً. بدون رسوم خفية.`,
+          feeExample: 'مثال: صفقة بـ 5,000 ريال', feeLine1: '← تراك لينك تأخذ 150 ريال', feeLine2: '← يستلم السائق 4,850 ريال',
+    },
     en: { settings: 'Settings', notifications: 'Push Notifications', language: 'Language',
           switchRole: 'Switch Role', privacy: 'Privacy', help: 'Help & Support',
           terms: 'Terms of Service', signOut: 'Sign Out', rating: 'Rating',
-          trips: 'Total Trips', member: 'Member Since', fee: 'Platform Fee', version: 'TruckLink v1.0.0' },
+          trips: 'Total Trips', member: 'Member Since', fee: 'Platform Fee', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 Shipper', roleDriver: '🚛 Driver',
+          feeDesc: `TruckLink charges a flat ${PLATFORM_FEE_PERCENT}% commission on each completed deal. Automatically deducted. No hidden charges.`,
+          feeExample: 'Example: SAR 5,000 deal', feeLine1: '→ TruckLink keeps SAR 150', feeLine2: '→ Driver receives SAR 4,850',
+    },
+    ur: { settings: 'ترتیبات', notifications: 'اطلاعات', language: 'زبان',
+          switchRole: 'کردار بدلیں', privacy: 'رازداری', help: 'مدد',
+          terms: 'شرائط', signOut: 'سائن آؤٹ', rating: 'ریٹنگ',
+          trips: 'کل سفر', member: 'رکنیت', fee: 'پلیٹ فارم فیس', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 شپر', roleDriver: '🚛 ڈرائیور',
+          feeDesc: `ٹرک لنک ہر مکمل ڈیل پر ${PLATFORM_FEE_PERCENT}% فلیٹ کمیشن لیتا ہے۔`,
+          feeExample: 'مثال: 5,000 SAR ڈیل', feeLine1: '← ٹرک لنک 150 SAR رکھتا ہے', feeLine2: '← ڈرائیور کو 4,850 SAR ملتا ہے',
+    },
+    fr: { settings: 'Paramètres', notifications: 'Notifications', language: 'Langue',
+          switchRole: 'Changer rôle', privacy: 'Confidentialité', help: 'Aide',
+          terms: 'Conditions', signOut: 'Déconnexion', rating: 'Note',
+          trips: 'Trajets', member: 'Membre', fee: 'Commission', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 Expéditeur', roleDriver: '🚛 Chauffeur',
+          feeDesc: `TruckLink prend ${PLATFORM_FEE_PERCENT}% sur chaque deal. Déduit automatiquement.`,
+          feeExample: 'Exemple: deal 5 000 SAR', feeLine1: '→ TruckLink garde 150 SAR', feeLine2: '→ Chauffeur reçoit 4 850 SAR',
+    },
+    hi: { settings: 'सेटिंग्स', notifications: 'सूचनाएं', language: 'भाषा',
+          switchRole: 'भूमिका बदलें', privacy: 'गोपनीयता', help: 'सहायता',
+          terms: 'नियम', signOut: 'साइन आउट', rating: 'रेटिंग',
+          trips: 'कुल यात्राएं', member: 'सदस्य', fee: 'प्लेटफॉर्म शुल्क', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 शिपर', roleDriver: '🚛 ड्राइवर',
+          feeDesc: `TruckLink हर पूरे सौदे पर ${PLATFORM_FEE_PERCENT}% कमीशन लेता है।`,
+          feeExample: 'उदाहरण: 5,000 SAR का सौदा', feeLine1: '→ TruckLink 150 SAR रखता है', feeLine2: '→ ड्राइवर को 4,850 SAR मिलता है',
+    },
+    bn: { settings: 'সেটিংস', notifications: 'বিজ্ঞপ্তি', language: 'ভাষা',
+          switchRole: 'ভূমিকা পরিবর্তন', privacy: 'গোপনীয়তা', help: 'সহায়তা',
+          terms: 'শর্তাবলী', signOut: 'সাইন আউট', rating: 'রেটিং',
+          trips: 'মোট ট্রিপ', member: 'সদস্য', fee: 'প্ল্যাটফর্ম ফি', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 শিপার', roleDriver: '🚛 চালক',
+          feeDesc: `TruckLink প্রতিটি সম্পন্ন ডিলে ${PLATFORM_FEE_PERCENT}% কমিশন নেয়।`,
+          feeExample: 'উদাহরণ: 5,000 SAR ডিল', feeLine1: '→ TruckLink 150 SAR রাখে', feeLine2: '→ চালক 4,850 SAR পান',
+    },
+    sw: { settings: 'Mipangilio', notifications: 'Arifa', language: 'Lugha',
+          switchRole: 'Badilisha jukumu', privacy: 'Faragha', help: 'Msaada',
+          terms: 'Masharti', signOut: 'Toka', rating: 'Ukadiriaji',
+          trips: 'Safari', member: 'Mwanachama', fee: 'Ada ya Jukwaa', version: 'TruckLink v1.0.0',
+          roleShipper: '📦 Mpakiaji', roleDriver: '🚛 Dereva',
+          feeDesc: `TruckLink inachukua ${PLATFORM_FEE_PERCENT}% kwa kila deal iliyokamilika.`,
+          feeExample: 'Mfano: deal ya SAR 5,000', feeLine1: '→ TruckLink inabaki SAR 150', feeLine2: '→ Dereva anapata SAR 4,850',
+    },
   };
   const L = labels[lang] ?? labels.en;
 
@@ -71,7 +119,7 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.name}>{user.name || '—'}</Text>
         <Text style={styles.phone}>{user.phone}</Text>
         <View style={[styles.roleBadge, user.role === 'driver' && styles.roleBadgeDriver]}>
-          <Text style={styles.roleText}>{user.role === 'shipper' ? '📦 Shipper' : '🚛 Driver'}</Text>
+          <Text style={styles.roleText}>{user.role === 'shipper' ? L.roleShipper : L.roleDriver}</Text>
         </View>
       </View>
 
@@ -84,14 +132,11 @@ export default function ProfileScreen({ navigation }) {
       {/* Platform fee info */}
       <View style={styles.feeInfoCard}>
         <Text style={[styles.feeInfoTitle, isRTL && styles.textRight]}>💰 {L.fee}</Text>
-        <Text style={[styles.feeInfoText, isRTL && styles.textRight]}>
-          TruckLink charges a flat <Text style={styles.feeHighlight}>{PLATFORM_FEE_PERCENT}% commission</Text> on each completed deal.
-          Automatically deducted. No hidden charges.
-        </Text>
+        <Text style={[styles.feeInfoText, isRTL && styles.textRight]}>{L.feeDesc}</Text>
         <View style={styles.feeExample}>
-          <Text style={[styles.feeExampleText, isRTL && styles.textRight]}>Example: SAR 5,000 deal</Text>
-          <Text style={[styles.feeExampleDetail, isRTL && styles.textRight]}>→ TruckLink keeps SAR 150</Text>
-          <Text style={[styles.feeExampleDetail, isRTL && styles.textRight]}>→ Driver receives SAR 4,850</Text>
+          <Text style={[styles.feeExampleText, isRTL && styles.textRight]}>{L.feeExample}</Text>
+          <Text style={[styles.feeExampleDetail, isRTL && styles.textRight]}>{L.feeLine1}</Text>
+          <Text style={[styles.feeExampleDetail, isRTL && styles.textRight]}>{L.feeLine2}</Text>
         </View>
       </View>
 
