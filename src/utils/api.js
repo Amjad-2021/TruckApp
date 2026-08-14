@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ── Change this URL after you deploy to Railway ───────────────────────────────
 // Local testing (your computer):   'http://localhost:3000'
 // Railway (production):            'https://your-app-name.up.railway.app'
-export const API_BASE_URL = 'https://trucklink-backend-production.up.railway.app';
+export const API_BASE_URL = 'http://130.110.97.254';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Internal helpers
@@ -238,6 +238,14 @@ export async function createLoad(load) {
     method: 'POST',
     body: JSON.stringify(load),
   });
+}
+
+/**
+ * Get all loads belonging to the currently logged-in user (shipper or driver).
+ * Maps to GET /api/loads/mine on the backend.
+ */
+export async function getMyOrders() {
+  return apiFetch('/api/loads/mine');
 }
 
 /**
